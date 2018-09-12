@@ -11,6 +11,6 @@ my $app = WordFinder->to_app;
 ok( is_coderef($app), 'Got app' );
 
 my $test = Plack::Test->create($app);
-my $res  = $test->request( GET '/' );
+my $res  = $test->request( GET '/ping' );
 
-ok( $res->is_success, '[GET /] successful' );
+ok( $res->is_success, '[GET /ping] successful' );

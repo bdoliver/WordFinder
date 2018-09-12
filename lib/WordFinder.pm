@@ -3,8 +3,7 @@ use Dancer2;
 
 our $VERSION = '0.1';
 
-get '/' => sub {
-    template 'index' => { 'title' => 'WordFinder' };
-};
+## ping = no-op, just respond with '200 OK'
+get '/ping' => sub {};
 
 true;
