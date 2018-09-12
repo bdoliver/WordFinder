@@ -10,13 +10,11 @@
 1. git clone https://github.com/bdoliver/WordFinder.git
 2. cd ./WordFinder
 3. plackup ./bin/app.psgi
-4. to run the tests (optional):
-
-    prove -I./lib ./t
 
 This will start the web server listening on port 5000.
 
 Eg:
+```bash
 $ curl http://localhost:5000/ping
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
@@ -27,22 +25,31 @@ $ curl http://localhost:5000/wordfinder/dgo
                                  Dload  Upload   Total   Spent    Left  Speed
 100    28    0    28    0     0     28      0 --:--:-- --:--:-- --:--:--   112
 ["do","dog","go","god","od"]
+```
 
 NB: The search algorithm is not particularly efficient. The longer the letter
 sequence, the slower it will get (>10 chars is where it starts to get _really_
 bad). Bear in mind this is only a sample application / proof of concept.
 
+4. to run the tests (optional):
+
+    prove -I./lib ./t
+
+
 ## Docker image:
 A container image is publicly available on docker hub,
 and may be run as follows:
 
+```bash
 sudo docker run --name bdo-wordfinder-app \
                 -p 8080:5000
                 -d bdoliver/bdo-wordfinder-app:latest
+```
 
 You can then test the application as described above by using port 8080
 on the local host:
 
+```bash
 $ curl -v http://localhost:8080/ping
 *   Trying 127.0.0.1...
 * TCP_NODELAY set
@@ -62,7 +69,6 @@ $ curl -v http://localhost:8080/ping
 * Connection #0 to host localhost left intact
 $
 
-
 $ curl -v http://localhost:8080/wordfinder/dgo
 *   Trying 127.0.0.1...
 * TCP_NODELAY set
@@ -81,5 +87,6 @@ $ curl -v http://localhost:8080/wordfinder/dgo
 * Connection #0 to host localhost left intact
 ["do","dog","go","god","od"]
 $
+```
 
 
