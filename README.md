@@ -27,16 +27,16 @@ $ curl http://localhost:5000/wordfinder/dgo
 ["do","dog","go","god","od"]
 ```
 
+4. to run the tests (optional):
+
+    prove -I./lib ./t
+
 NB:
 1) The search algorithm is not particularly efficient. The longer the letter
 sequence, the slower it will get (>10 chars is where it starts to get _really_
 bad). Bear in mind this is only a sample application / proof of concept.
 2) Since this is a _word_ search, the server will return '400 - Bad Request'
 if the search term contains anything other than letters.
-
-4. to run the tests (optional):
-
-    prove -I./lib ./t
 
 
 ## Docker image:
