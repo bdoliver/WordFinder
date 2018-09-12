@@ -1,4 +1,5 @@
 requires "Dancer2" => "0.205002";
+requires "Algorithm::Permute" => "0.16";
 
 recommends "YAML"             => "0";
 recommends "URL::Encode::XS"  => "0";
