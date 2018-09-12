@@ -42,7 +42,7 @@ and may be run as follows:
 
 ```bash
 sudo docker run --name bdo-wordfinder-app \
-                -p 8080:5000
+                -p 8080:5000 \
                 -d bdoliver/bdo-wordfinder-app:latest
 ```
 
