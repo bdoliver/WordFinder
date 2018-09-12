@@ -22,11 +22,15 @@ sub find_words {
 
     my @letters = split(q{}, $input);
 
-    ## Create all possible permutations of the letters given:
-    my %permutations = ();
+    my %words;
 
-    ## No sense permuting down to single lettes - the only two single letter
+    ## Permute all combinations of letters in the input string,
+    ## down to all possible 2-char strings. No sense permuting
+    ## down to single letters - the only two single letter
     ## English words found in /usr/share/dict/words are 'a' & 'I')
+    ## Could also be smarter if we only look at 2-char "words" which
+    ## contain a vowel or 'y'...
+
     for ( my $i = @letters; $i > 1 ; $i-- ) {
 
         my $p = Algorithm::Permute->new([ @letters ], $i);
@@ -34,29 +38,18 @@ sub find_words {
         ## we can get duplicate permutations - we're only interested
         ## in the unique strings, so we keep track of only those:
         while ( my @res = $p->next ) {
-            $permutations{join(q{}, @res)} ||= 1;
+            my $permuted_string = join(q{}, @res);
+
+            if ( exists $DICT{$permuted_string} ) {
+                $words{$DICT{$permuted_string}} ||= 1;
+            }
         }
     }
 
-    # ... and if the input _does_ contain an 'a' or 'i':
-    $permutations{a} = 1 if $input =~ qr{a};
-    $permutations{i} = 1 if $input =~ qr{i};
+    $words{a} = 1 if $input =~ qr{a};
+    $words{I} = 1 if $input =~ qr{i};
 
-    debug "Total permutations of '$input': ".(scalar keys %permutations);
-
-    my @words = ();
-
-    ## Find all the 'words':
-    ## I like a sorted list - could remove the sort for speed as the
-    ## permutations hash will get quite big for long words... not to
-    ## mention, this isn't exactly memory-efficient either.
-    for my $s ( sort keys %permutations ) {
-        if ( my $word = $DICT{$s} ) {
-            push @words, $word;
-        }
-    }
-
-    return \@words;
+    return [ sort keys %words ];
 }
 
 ## ------------------------------------------------------------------
@@ -71,12 +64,6 @@ get '/wordfinder/:input' => sub {
     # this is a word search - letters only please:
     $input =~ qr{^[[:alpha:]]+$} or
         send_error("Bad input", 400);
-
-    # this is a pretty crap algorithm, so for now, deny strings longer
-    # than 10 characters - it takes way too long to iterate through the
-    # permutations
-    length($input) <= 10 or
-        send_error("Input too long", 400);
 
     debug qq{/wordfinder input: $input};
 
