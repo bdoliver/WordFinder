@@ -20,7 +20,8 @@ my %DICT = ( map { lc $_ => $_ } path($dictionary)->lines({chomp => 1}) );
 sub find_words {
     my ( $input ) = @_;
 
-    my @letters = split(q{}, $input);
+    # lookup is not case sensitive:
+    my @letters = split(q{}, lc $input);
 
     my %words;
 
